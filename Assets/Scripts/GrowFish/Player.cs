@@ -32,7 +32,6 @@ namespace Minigame.GrowFish
                     collision.gameObject.GetComponent<Fish>().Delete();
 
                     float plusScale = enemyLevel / 10;
-                    Debug.Log(plusScale);
                     transform.localScale = new Vector2(transform.localScale.x + plusScale, transform.localScale.y + plusScale);
                     GameManager.instance.AddScore((int)enemyLevel * 10);
                 }
