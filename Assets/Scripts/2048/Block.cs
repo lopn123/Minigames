@@ -1,23 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Minigame.TwoZeroFourEight
 {
     public class Block : MonoBehaviour
     {
-        public int num;
+        public int num { get; private set; }
 
-        // Start is called before the first frame update
-        void Start()
+        public void SetNum(int Num)
         {
-            transform.position = Vector3.zero;
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            num = Num;
+            GetComponent<Text>().text = "" + num;
         }
     }
 }

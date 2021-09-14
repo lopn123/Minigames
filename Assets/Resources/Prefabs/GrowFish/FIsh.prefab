@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9180616707699454369}
   - component: {fileID: 9180616707699454368}
-  - component: {fileID: 9180616707699454375}
   - component: {fileID: 9180616707699454370}
+  - component: {fileID: 9180616707699454375}
   m_Layer: 0
   m_Name: FIsh
   m_TagString: Enemy
@@ -84,21 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9180616707699454375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9180616707699454374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4047fa18b88c7c46abd8ea6f38eaeaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minSpeed: 3
-  maxSpeed: 8
-  level: 0
 --- !u!60 &9180616707699454370
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -162,3 +147,19 @@ PolygonCollider2D:
       - {x: 0.09375, y: -0.99609375}
       - {x: 0.1328125, y: -0.98828125}
       - {x: 0.1875, y: -0.96875}
+--- !u!114 &9180616707699454375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9180616707699454374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4047fa18b88c7c46abd8ea6f38eaeaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minSpeed: 3
+  maxSpeed: 8
+  spawnLocationX: 200
+  level: 0

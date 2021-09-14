@@ -14,14 +14,16 @@ namespace Minigame.GrowFish
     public class Fish : MonoBehaviour
     {
         private MoveDirection moveDirection;
-        private Vector2 screenPos;
+
+        public int minSpeed;
+        public int maxSpeed;
+        protected int speed;
 
         [SerializeField]
-        private int minSpeed;
-        [SerializeField]
-        private int maxSpeed;
-        private int speed;
-        
+        protected float spawnLocationX;
+        protected Vector2 screenPos;
+
+        [HideInInspector]
         public int level;
         
         private float spawnPosX;
@@ -41,8 +43,8 @@ namespace Minigame.GrowFish
         private void Init()
         {
             SetPos();
-            SetLevel();
             SetSpeed();
+            SetLevel();
         }
 
         private void SetPos()
@@ -50,18 +52,35 @@ namespace Minigame.GrowFish
             moveDirection = (MoveDirection)UnityEngine.Random.Range(0, Enum.GetValues(typeof(MoveDirection)).Length + 1);
             float y = UnityEngine.Random.Range(0, Screen.height);
 
-            if(moveDirection == MoveDirection.Left)
+            if (moveDirection == MoveDirection.Left)
             {
-                transform.position = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width + 200, y));
+                transform.position = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width + spawnLocationX, y));
                 transform.position = new Vector3(transform.position.x, transform.position.y, 0);
             }
             else
             {
-                transform.position = Camera.main.ScreenToWorldPoint(new Vector2(-200, y));
+                transform.position = Camera.main.ScreenToWorldPoint(new Vector2(-spawnLocationX, y));
                 transform.position = new Vector3(transform.position.x, transform.position.y, 0);
             }
             screenPos = Camera.main.WorldToScreenPoint(transform.position);
             spawnPosX = Mathf.Abs(screenPos.x);
+        }
+
+        private void SetSpeed()
+        {
+            speed = UnityEngine.Random.Range(minSpeed, maxSpeed + 1);
+        }
+
+        private void Move()
+        {
+            if (moveDirection == MoveDirection.Left)
+            {
+                transform.Translate(0, speed * Time.deltaTime, 0); // Rotation 0 0 0 맞추면 Translate(x, value, z) value -> x
+            }
+            else
+            {
+                transform.Translate(0, -speed * Time.deltaTime, 0);
+            }
         }
 
         private void SetLevel()
@@ -87,23 +106,6 @@ namespace Minigame.GrowFish
                 case 5:
                     GetComponent<SpriteRenderer>().color = Color.magenta;
                     break;
-            }
-        }
-        
-        private void SetSpeed()
-        {
-            speed = UnityEngine.Random.Range(minSpeed, maxSpeed + 1);
-        }
-
-        private void Move()
-        {
-            if(moveDirection == MoveDirection.Left)
-            {
-                transform.Translate(0, speed * Time.deltaTime, 0); // Rotation 0 0 0 맞추면 Translate(x, value, z) value -> x
-            }
-            else
-            {
-                transform.Translate(0, -speed * Time.deltaTime, 0);
             }
         }
 

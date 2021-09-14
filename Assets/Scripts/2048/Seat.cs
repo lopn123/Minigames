@@ -6,11 +6,26 @@ namespace Minigame.TwoZeroFourEight
 {
     public class Seat : MonoBehaviour
     {
-        public Block block;
+        public Block block { get; private set; }
 
-        private void SetBlock(Block newBlock)
+        public void SetBlock(Block newBlock)
         {
-            block = newBlock;
+            if(newBlock != null)
+            {
+                block = newBlock;
+                block.transform.SetParent(this.transform);
+                block.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                block = newBlock;
+            }
+        }
+
+        public void DestroyBlock()
+        {
+            Destroy(block.gameObject);
+            block = null;
         }
     }
 }

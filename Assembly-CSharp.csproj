@@ -57,9 +57,12 @@
     <Compile Include="Assets\Scripts\GrowFish\Fish.cs" />
     <Compile Include="Assets\Scripts\TowerStack\BlockSpanwer.cs" />
     <Compile Include="Assets\Scripts\TowerStack\GameManager.cs" />
+    <Compile Include="Assets\Scripts\2048\Block.cs" />
     <Compile Include="Assets\Scripts\Sniper\Enemy.cs" />
     <Compile Include="Assets\Scripts\TowerStack\MoveDirection.cs" />
+    <Compile Include="Assets\Scripts\2048\GameManager.cs" />
     <Compile Include="Assets\Scripts\TowerStack\MainCamera.cs" />
+    <Compile Include="Assets\Scripts\2048\Seat.cs" />
     <Compile Include="Assets\Scripts\GrowFish\Player.cs" />
     <Compile Include="Assets\Scripts\TowerStack\UIManager.cs" />
     <Compile Include="Assets\Scripts\Sniper\Bullet.cs" />
@@ -69,9 +72,10 @@
     <Compile Include="Assets\Scripts\GrowFish\UIManager.cs" />
     <Compile Include="Assets\Scripts\GrowFish\GameManager.cs" />
     <Compile Include="Assets\Scripts\ObjectPool.cs" />
-    <Compile Include="Assets\Scripts\2048\Block.cs" />
-    <Compile Include="Assets\Scripts\2048\GameManager.cs" />
-    <Compile Include="Assets\Scripts\2048\Seat.cs" />
+    <Compile Include="Assets\Scripts\ShuffleList.cs" />
+    <Compile Include="Assets\Scripts\Fishing\MainCamera.cs" />
+    <Compile Include="Assets\Scripts\Fishing\Fish.cs" />
+    <Compile Include="Assets\Scripts\Fishing\Sensor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
