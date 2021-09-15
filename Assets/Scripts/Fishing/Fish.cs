@@ -9,17 +9,24 @@ namespace Minigame.Fishing
     {
         private IEnumerator SetMoveCoroutine;
 
+        #region Vector
         [SerializeField]
         private Vector2 maxMoveValue;
         private Vector2 moveTargetPos;
+        private Vector2 screenPos;
+        private Vector3 quaternionToTarget;
+        #endregion
+
+        private Quaternion targetRotation;
 
         private GameObject player;
 
         [SerializeField]
         private int fishMoveTime;
         [SerializeField]
-        private int speed;
-        private float angle;
+        private float speed;
+        [SerializeField]
+        private float rotSpeed;
         private bool isFollow;
 
         public UnityAction<bool> detectEvent;
@@ -27,12 +34,18 @@ namespace Minigame.Fishing
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player");
+            SetMoveCoroutine = SetMovementDirection();
             detectEvent += DetectionPlayer;
         }
 
         private void OnEnable()
         {
             Init();
+        }
+
+        private void OnDisable()
+        {
+            StopCoroutine(SetMoveCoroutine);
         }
 
         private void Update()
@@ -43,9 +56,9 @@ namespace Minigame.Fishing
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if(collision.CompareTag("Player"))
+            if(collision.gameObject == player)
             {
-                //TODO :: ³¬½Ë´ë °É¸²
+                transform.SetParent(collision.transform);
             }
         }
 
@@ -67,8 +80,14 @@ namespace Minigame.Fishing
         {
             isFollow = false;
 
-            SetMoveCoroutine = SetMovementDirection();
+            SetRandomPos();
             StartCoroutine(SetMoveCoroutine);
+        }
+
+        private void SetRandomPos()
+        {
+            transform.position = Camera.main.ScreenToWorldPoint(
+                new Vector2(Random.Range(0, Screen.width), Random.Range(0, Screen.height)));
         }
 
         private IEnumerator SetMovementDirection()
@@ -89,14 +108,15 @@ namespace Minigame.Fishing
                 startPos = transform.position;
                 direction = moveTargetPos - startPos;
 
-                angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                transform.localRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                quaternionToTarget = Quaternion.Euler(0, 0, 90) * direction;
+                targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: quaternionToTarget);
             }
         }
 
         private void Move()
         {
             transform.position = Vector2.MoveTowards(transform.position, moveTargetPos, speed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
         }
 
         private void FollowPlayer()
@@ -104,6 +124,16 @@ namespace Minigame.Fishing
             if(isFollow)
             {
                 moveTargetPos = player.transform.position;
+            }
+        }
+
+        private void IsMapOut()
+        {
+            screenPos = Camera.main.WorldToScreenPoint(transform.position);
+
+            if(screenPos.x > Screen.width)
+            {
+                Delete();
             }
         }
 

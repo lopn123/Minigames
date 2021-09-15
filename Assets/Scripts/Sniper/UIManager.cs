@@ -17,7 +17,9 @@ namespace Minigame.Sniper
         [SerializeField]
         private Text text_gameResult;
         [SerializeField]
-        private Text text_starCount; //юс╫ц
+        private Text text_starCount;
+        [SerializeField]
+        private Text text_bulletCount;
         #endregion
 
         private void Awake()
@@ -56,6 +58,11 @@ namespace Minigame.Sniper
         public void ClickChangeWeapone()
         {
 
+        }
+
+        public void SetBulletCountText(int Count)
+        {
+            text_bulletCount.text = "Bullet : " + Count;
         }
     }
 }

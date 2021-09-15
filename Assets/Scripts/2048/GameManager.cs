@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Minigame.TwoZeroFourEight
@@ -15,14 +16,19 @@ namespace Minigame.TwoZeroFourEight
 
     public class GameManager : MonoBehaviour
     {
-        private Seat[,] seatArray = new Seat[4, 4];
+        private Seat[,] seatArray;
         private List<Seat> emptySeatList = new List<Seat>();
+
+        [SerializeField]
+        private int seatWidth = 4;
+        [SerializeField]
+        private int seatHeight = 4;
 
         [SerializeField]
         private Block blockPrefab;
 
         [SerializeField]
-        [Tooltip("생성되는 블럭이 가질 수 있는 최대값 (짝수)")]
+        [Tooltip("생성되는 블럭이 가질 수 있는 최대값")]
         private int spawnBlockMaxNum = 2;
 
         private void Awake()
@@ -32,15 +38,25 @@ namespace Minigame.TwoZeroFourEight
 
         private void Init()
         {
-            var seats = GameObject.FindObjectsOfType<Seat>();
-            int num = seats.Length - 1;
+            seatArray = new Seat[seatHeight, seatWidth];
 
-            for (int i = 0; i < 4; i++)
+            var seats = new List<Seat>();
+            Seat seat;
+
+            for (int i = 0; i < seatArray.Length; i++)
             {
-                for (int j = 0; j < 4; j++)
+                seat = GameObject.Find(string.Format("Seat ({0})", i)).GetComponent<Seat>();
+                seats.Add(seat);
+            }
+            
+            int num = 0;
+
+            for (int i = 0; i < seatHeight; i++)
+            {
+                for (int j = 0; j < seatWidth; j++)
                 {
-                    seatArray[i, j] = seats[num--];
-                    //Debug.LogFormat("seatArray[{0}, {1}] = {2}", i, j, seats[num + 1].name);
+                    seatArray[i, j] = seats[num++];
+                    //Debug.LogFormat("seatArray[{0}, {1}] = {2}", i, j, seats[num - 1].name);
                 }
             }
 
@@ -134,19 +150,25 @@ namespace Minigame.TwoZeroFourEight
 
         private void MoveBlock(MoveDirection direction)
         {
+            int height = seatHeight - 1;
+            int width = seatWidth - 1;
+            bool isAction = false;
+
             switch(direction)
             {
                 case MoveDirection.Up:
-                    for(int i = 3; i > 0; i--)
+                    for(int i = height; i > 0; i--)
                     {
-                        for(int j = 0; j < 4; j++)
+                        for(int j = 0; j < seatWidth; j++)
                         {
-                            if (seatArray[i, j].block != null)
+                            if (seatArray[i, j].block != null) //빈 자리가 아니라면 실행
                             {
-                                if (seatArray[i - 1, j].block == null) //위 블럭이 비어있다면, 현재 블럭의 숫자 위로 이동.
+                                if (seatArray[i - 1, j].block == null) //위가 빈 자리라면, 현재 블럭 위로 이동.
                                 {
                                     seatArray[i - 1, j].SetBlock(seatArray[i, j].block);
                                     seatArray[i, j].SetBlock(null);
+
+                                    if(i != height) isAction = true;
                                 }
                                 else //위 블럭과 현재 블럭의 숫자가 같다면 합침.
                                 {
@@ -154,16 +176,28 @@ namespace Minigame.TwoZeroFourEight
                                     {
                                         seatArray[i - 1, j].block.SetNum(seatArray[i - 1, j].block.num * 2);
                                         seatArray[i, j].DestroyBlock();
+
+                                        if(i != height) isAction = true;
                                     }
+                                }
+                                if(isAction) //아래 블럭 존재 시, 위로 이동 (정렬)
+                                {
+                                    if (seatArray[i + 1, j].block != null)
+                                    {
+                                        seatArray[i, j].SetBlock(seatArray[i + 1, j].block);
+                                        seatArray[i + 1, j].SetBlock(null);
+                                    }
+
+                                    isAction = false;
                                 }
                             }
                         }
                     }
                     break;
                 case MoveDirection.Down:
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < height; i++)
                     {
-                        for (int j = 0; j < 4; j++)
+                        for (int j = 0; j < seatWidth; j++)
                         {
                             if (seatArray[i, j].block != null)
                             {
@@ -171,6 +205,8 @@ namespace Minigame.TwoZeroFourEight
                                 {
                                     seatArray[i + 1, j].SetBlock(seatArray[i, j].block);
                                     seatArray[i, j].SetBlock(null);
+
+                                    if(i != 0) isAction = true;
                                 }
                                 else
                                 {
@@ -178,16 +214,29 @@ namespace Minigame.TwoZeroFourEight
                                     {
                                         seatArray[i + 1, j].block.SetNum(seatArray[i + 1, j].block.num * 2);
                                         seatArray[i, j].DestroyBlock();
+
+                                        if (i != 0) isAction = true;
                                     }
+                                }
+
+                                if (isAction)
+                                {
+                                    if (seatArray[i - 1, j].block != null)
+                                    {
+                                        seatArray[i, j].SetBlock(seatArray[i - 1, j].block);
+                                        seatArray[i - 1, j].SetBlock(null);
+                                    }
+
+                                    isAction = false;
                                 }
                             }
                         }
                     }
                     break;
                 case MoveDirection.Left:
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < seatHeight; i++)
                     {
-                        for (int j = 3; j > 0; j--)
+                        for (int j = width; j > 0; j--)
                         {
                             if (seatArray[i, j].block != null)
                             {
@@ -195,6 +244,8 @@ namespace Minigame.TwoZeroFourEight
                                 {
                                     seatArray[i, j - 1].SetBlock(seatArray[i, j].block);
                                     seatArray[i, j].SetBlock(null);
+
+                                    if (j != width) isAction = true;
                                 }
                                 else
                                 {
@@ -202,16 +253,29 @@ namespace Minigame.TwoZeroFourEight
                                     {
                                         seatArray[i, j - 1].block.SetNum(seatArray[i, j - 1].block.num * 2);
                                         seatArray[i, j].DestroyBlock();
+
+                                        if (j != width) isAction = true;
                                     }
+                                }
+
+                                if (isAction)
+                                {
+                                    if (seatArray[i, j + 1].block != null)
+                                    {
+                                        seatArray[i, j].SetBlock(seatArray[i, j + 1].block);
+                                        seatArray[i, j + 1].SetBlock(null);
+                                    }
+
+                                    isAction = false;
                                 }
                             }
                         }
                     }
                     break;
                 case MoveDirection.Right:
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < seatHeight; i++)
                     {
-                        for (int j = 0; j < 3; j++)
+                        for (int j = 0; j < width; j++)
                         {
                             if (seatArray[i, j].block != null)
                             {
@@ -219,6 +283,8 @@ namespace Minigame.TwoZeroFourEight
                                 {
                                     seatArray[i, j + 1].SetBlock(seatArray[i, j].block);
                                     seatArray[i, j].SetBlock(null);
+
+                                    if (j != 0) isAction = true;
                                 }
                                 else
                                 {
@@ -226,7 +292,20 @@ namespace Minigame.TwoZeroFourEight
                                     {
                                         seatArray[i, j + 1].block.SetNum(seatArray[i, j + 1].block.num * 2);
                                         seatArray[i, j].DestroyBlock();
+
+                                        if (j != 0) isAction = true;
                                     }
+                                }
+
+                                if (isAction)
+                                {
+                                    if (seatArray[i, j - 1].block != null)
+                                    {
+                                        seatArray[i, j].SetBlock(seatArray[i, j - 1].block);
+                                        seatArray[i, j - 1].SetBlock(null);
+                                    }
+
+                                    isAction = false;
                                 }
                             }
                         }

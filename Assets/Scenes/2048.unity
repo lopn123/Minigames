@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20ed801624d9694cb9bfd3e39f6b7d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  seatWidth: 4
+  seatHeight: 4
   blockPrefab: {fileID: 6003334038540894865, guid: 5382e12f411ce8c41b885a6511071b4e, type: 3}
   spawnBlockMaxNum: 2
 --- !u!4 &219264867
@@ -863,7 +865,7 @@ GameObject:
   - component: {fileID: 767988977}
   - component: {fileID: 767988976}
   m_Layer: 5
-  m_Name: Seat
+  m_Name: Seat (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1210,7 +1212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

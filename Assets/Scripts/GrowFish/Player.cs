@@ -23,7 +23,7 @@ namespace Minigame.GrowFish
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("Enemy"))
+            if (collision.gameObject.CompareTag("Enemy")) //¹°°í±â
             {
                 float enemyLevel = collision.gameObject.GetComponent<Fish>().level;
 

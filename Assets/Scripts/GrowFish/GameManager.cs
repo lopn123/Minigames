@@ -69,7 +69,7 @@ namespace Minigame.GrowFish
         public void AddScore(int Score)
         {
             score += Score;
-            uiManager.SetScore(Score);
+            uiManager.SetScore(score);
         }
 
         public void GameOver()

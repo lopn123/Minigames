@@ -54,6 +54,7 @@ namespace Minigame.Sniper
                 var bullet = Instantiate(bulletPrefab, bulletStorage);
                 bullets.Enqueue(bullet);
             }
+            uiManager.SetBulletCountText(bulletCount);
 
             if(GameObject.FindObjectsOfType<Enemy>() != null)
             {
@@ -67,10 +68,6 @@ namespace Minigame.Sniper
 
         private void Fire()
         {
-            if (Input.GetMouseButton(0))
-            {
-                //TODO :: ÃÑ¾Ë ±ËÀû Ç¥½Ã
-            }
             if (Input.GetMouseButtonUp(0))
             {
                 if(bullets.Count > 0)
@@ -78,6 +75,7 @@ namespace Minigame.Sniper
                     GameObject bullet = bullets.Dequeue();
                     bullet.GetComponent<Bullet>().mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     bullet.SetActive(true);
+                    uiManager.SetBulletCountText(bullets.Count);
                 }
             }
         }
