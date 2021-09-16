@@ -14,6 +14,8 @@ namespace Minigame.Fishing
         private Vector2 maxMoveValue;
         private Vector2 moveTargetPos;
         private Vector2 screenPos;
+        private Vector2 startPos;
+        private Vector2 direction;
         private Vector3 quaternionToTarget;
         #endregion
 
@@ -23,11 +25,17 @@ namespace Minigame.Fishing
 
         [SerializeField]
         private int fishMoveTime;
+
         [SerializeField]
-        private float speed;
+        private float normalSpeed;
+        [SerializeField]
+        private float followSpeed;
         [SerializeField]
         private float rotSpeed;
+        private float curSpeed;
+
         private bool isFollow;
+        private bool isCatch;
 
         public UnityAction<bool> detectEvent;
 
@@ -50,16 +58,27 @@ namespace Minigame.Fishing
 
         private void Update()
         {
-            FollowPlayer();
-            Move();
+            if (!isCatch)
+            {
+                FollowPlayer();
+                Move();
+            }
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        private void Init()
         {
-            if(collision.gameObject == player)
+            if(transform.parent != ObjectPool.instance.transform)
             {
-                transform.SetParent(collision.transform);
+                transform.SetParent(ObjectPool.instance.transform);
             }
+
+            isFollow = false;
+            isCatch = false;
+
+            curSpeed = normalSpeed;
+
+            SetRandomPos();
+            StartCoroutine(SetMoveCoroutine);
         }
 
         private void DetectionPlayer(bool isDetection)
@@ -67,21 +86,16 @@ namespace Minigame.Fishing
             if(isDetection)
             {
                 isFollow = true;
+                curSpeed = followSpeed;
+
                 StopCoroutine(SetMoveCoroutine);
             }
             else
             {
                 isFollow = false;
+                curSpeed = normalSpeed;
                 StartCoroutine(SetMoveCoroutine);
             }
-        }
-
-        private void Init()
-        {
-            isFollow = false;
-
-            SetRandomPos();
-            StartCoroutine(SetMoveCoroutine);
         }
 
         private void SetRandomPos()
@@ -92,9 +106,6 @@ namespace Minigame.Fishing
 
         private IEnumerator SetMovementDirection()
         {
-            Vector2 startPos;
-            Vector2 direction;
-
             WaitForSeconds wait = new WaitForSeconds(fishMoveTime);
 
             while(true)
@@ -115,7 +126,7 @@ namespace Minigame.Fishing
 
         private void Move()
         {
-            transform.position = Vector2.MoveTowards(transform.position, moveTargetPos, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, moveTargetPos, curSpeed * Time.deltaTime);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
         }
 
@@ -124,7 +135,18 @@ namespace Minigame.Fishing
             if(isFollow)
             {
                 moveTargetPos = player.transform.position;
+
+                direction = player.transform.position - transform.position;
+
+                quaternionToTarget = Quaternion.Euler(0, 0, 90) * direction;
+                targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: quaternionToTarget);
             }
+        }
+
+        public void Catch()
+        {
+            isCatch = true;
+            StopCoroutine(SetMoveCoroutine);
         }
 
         private void IsMapOut()

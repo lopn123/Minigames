@@ -55,6 +55,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Sniper\GameManager.cs" />
     <Compile Include="Assets\Scripts\GrowFish\Fish.cs" />
+    <Compile Include="Assets\Scripts\TempleRun\Player.cs" />
+    <Compile Include="Assets\Scripts\Fishing\FishingFloat.cs" />
     <Compile Include="Assets\Scripts\TowerStack\BlockSpanwer.cs" />
     <Compile Include="Assets\Scripts\TowerStack\GameManager.cs" />
     <Compile Include="Assets\Scripts\2048\Block.cs" />
@@ -71,14 +73,14 @@
     <Compile Include="Assets\Scripts\TowerStack\MovingBlock.cs" />
     <Compile Include="Assets\Scripts\ShuffleList.cs" />
     <Compile Include="Assets\Scripts\Sniper\UIManager.cs" />
+    <Compile Include="Assets\Scripts\Fishing\FishSpawner.cs" />
+    <Compile Include="Assets\Scripts\Fishing\GameManager.cs" />
     <Compile Include="Assets\Scripts\Fishing\Fish.cs" />
     <Compile Include="Assets\Scripts\GrowFish\UIManager.cs" />
     <Compile Include="Assets\Scripts\GrowFish\GameManager.cs" />
     <Compile Include="Assets\Scripts\ObjectPool.cs" />
-    <Compile Include="Assets\Scripts\TempleRun\Player.cs" />
-    <Compile Include="Assets\Scripts\Fishing\FishingFloat.cs" />
-    <Compile Include="Assets\Scripts\Fishing\FishSpawner.cs" />
-    <Compile Include="Assets\Scripts\Fishing\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Fishing\UI\UIManager.cs" />
+    <Compile Include="Assets\Scripts\Fishing\UI\UIFishingEndManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
