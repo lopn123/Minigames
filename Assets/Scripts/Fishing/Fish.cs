@@ -25,7 +25,9 @@ namespace Minigame.Fishing
 
         [SerializeField]
         private int fishMoveTime;
+        public int fishLevel;
 
+        #region float
         [SerializeField]
         private float normalSpeed;
         [SerializeField]
@@ -33,6 +35,7 @@ namespace Minigame.Fishing
         [SerializeField]
         private float rotSpeed;
         private float curSpeed;
+        #endregion
 
         private bool isFollow;
         private bool isCatch;
@@ -67,11 +70,6 @@ namespace Minigame.Fishing
 
         private void Init()
         {
-            if(transform.parent != ObjectPool.instance.transform)
-            {
-                transform.SetParent(ObjectPool.instance.transform);
-            }
-
             isFollow = false;
             isCatch = false;
 

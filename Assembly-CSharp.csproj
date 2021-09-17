@@ -56,6 +56,7 @@
     <Compile Include="Assets\Scripts\Sniper\GameManager.cs" />
     <Compile Include="Assets\Scripts\GrowFish\Fish.cs" />
     <Compile Include="Assets\Scripts\TempleRun\Player.cs" />
+    <Compile Include="Assets\Scripts\Fishing\UI\UIFishingEnd.cs" />
     <Compile Include="Assets\Scripts\Fishing\FishingFloat.cs" />
     <Compile Include="Assets\Scripts\TowerStack\BlockSpanwer.cs" />
     <Compile Include="Assets\Scripts\TowerStack\GameManager.cs" />
@@ -80,7 +81,8 @@
     <Compile Include="Assets\Scripts\GrowFish\GameManager.cs" />
     <Compile Include="Assets\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Fishing\UI\UIManager.cs" />
-    <Compile Include="Assets\Scripts\Fishing\UI\UIFishingEndManager.cs" />
+    <Compile Include="Assets\Scripts\Fishing\UI\UIFishingNet.cs" />
+    <Compile Include="Assets\Scripts\Fishing\BoatDriver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
