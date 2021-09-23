@@ -18,18 +18,26 @@ namespace Minigame.Fishing
         [SerializeField]
         private FishSpawner fishSpawner;
 
-        private TurnState nowState;
+        public TurnState nowState;
 
         public UnityAction<TurnState> changeStateEvent;
+
+        public int money;
 
         private void Awake()
         {
             instance = this;
+            changeStateEvent += (state) => {
+                Debug.Log("State Changed. NowState : " + state.ToString());
+                nowState = state;
+            };
         }
 
         private void Start()
         {
-            //fishSpawner.SpawnStart();
+            money = 0;
+            changeStateEvent.Invoke(TurnState.READY_TURN);
+            fishSpawner.SpawnStart();
         }
 
         // Update is called once per frame
@@ -38,9 +46,10 @@ namespace Minigame.Fishing
 
         }
 
-        public void AllObjectChangeState(TurnState state)
+        public void GetMoney(int value)
         {
-            changeStateEvent.Invoke(state);
+            money += value;
+            UIManager.instance.uiCommon.SetText_Money(value);
         }
     }
 }

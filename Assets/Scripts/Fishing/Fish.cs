@@ -25,7 +25,8 @@ namespace Minigame.Fishing
 
         [SerializeField]
         private int fishMoveTime;
-        public int fishLevel;
+        public int level;
+        public int price;
 
         #region float
         [SerializeField]
@@ -37,13 +38,20 @@ namespace Minigame.Fishing
         private float curSpeed;
         #endregion
 
-        private bool isFollow;
+        [HideInInspector]
+        public bool isFollow;
         private bool isCatch;
+
+        private TurnState state;
 
         public UnityAction<bool> detectEvent;
 
+        [HideInInspector]
+        public Sprite fishImage;
+
         private void Awake()
         {
+            fishImage = GetComponent<SpriteRenderer>().sprite;
             player = GameObject.FindGameObjectWithTag("Player");
             SetMoveCoroutine = SetMovementDirection();
             detectEvent += DetectionPlayer;
@@ -85,21 +93,23 @@ namespace Minigame.Fishing
             {
                 isFollow = true;
                 curSpeed = followSpeed;
-
                 StopCoroutine(SetMoveCoroutine);
             }
             else
             {
-                isFollow = false;
-                curSpeed = normalSpeed;
-                StartCoroutine(SetMoveCoroutine);
+                if(isFollow)
+                {
+                    isFollow = false;
+                    curSpeed = normalSpeed;
+                    StartCoroutine(SetMoveCoroutine);
+                }
             }
         }
 
         private void SetRandomPos()
         {
             transform.position = Camera.main.ScreenToWorldPoint(
-                new Vector2(Random.Range(0, Screen.width), Random.Range(0, Screen.height)));
+                new Vector2(Random.Range(0, Screen.width), Random.Range(0, Screen.height/2)));
         }
 
         private IEnumerator SetMovementDirection()

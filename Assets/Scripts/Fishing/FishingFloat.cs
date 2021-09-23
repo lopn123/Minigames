@@ -7,12 +7,14 @@ namespace Minigame.Fishing
 {
     public class FishingFloat : MonoBehaviour
     {
-        private Transform fishingRodTransform;
+        private Transform fishingEndTransform;
         private Rigidbody2D rb2D;
 
         private Fish caughtFish;
         [HideInInspector]
         public TurnState state;
+
+        public int level = 1;
 
         [SerializeField]
         private float pullingSpeed;
@@ -24,19 +26,13 @@ namespace Minigame.Fishing
         private float FishingTurnGravity;
         private float speed;
         private float curTime;
-
-        private bool isCatch;
+        
         private bool isPressed;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Awake()
         {
-            fishingRodTransform = this.transform.parent.transform;
-
             rb2D = transform.GetComponent<Rigidbody2D>();
-
-            state = TurnState.READY_TURN;
-            TurnState_Init();
+            fishingEndTransform = this.transform.parent.transform;
             GameManager.instance.changeStateEvent += ChangeState;
         }
 
@@ -52,16 +48,15 @@ namespace Minigame.Fishing
             {
                 if(collision.gameObject.layer == LayerMask.NameToLayer("Water"))
                 {
-                    GameManager.instance.AllObjectChangeState(TurnState.FISHING_TURN);
+                    GameManager.instance.changeStateEvent(TurnState.FISHING_TURN);
                 }
             }
             else if(state == TurnState.FISHING_TURN)
             {
-                if (!isCatch)
+                if (caughtFish == null)
                 {
-                    if (collision.CompareTag("Enemy")) //Fish
+                    if (collision.CompareTag("Enemy") && collision.GetComponent<Fish>().level <= this.level) //Fish
                     {
-                        isCatch = true;
                         caughtFish = collision.gameObject.GetComponent<Fish>();
                         caughtFish.Catch();
                         collision.transform.SetParent(this.transform);
@@ -125,6 +120,7 @@ namespace Minigame.Fishing
                 isPressed = false;
 
                 READY_Move();
+                UIManager.instance.uiReadyTurn.SetActive_CastingButton(false);
             }
         }
 
@@ -145,8 +141,6 @@ namespace Minigame.Fishing
             rb2D.velocity = Vector2.zero;
             rb2D.gravityScale = FishingTurnGravity;
 
-            if(isCatch) isCatch = false;
-
             if(caughtFish != null)
             {
                 caughtFish.transform.SetParent(ObjectPool.instance.transform);
@@ -163,15 +157,29 @@ namespace Minigame.Fishing
         {
             if (Input.GetMouseButton(0))
             {
-                transform.position = Vector2.MoveTowards(transform.position, fishingRodTransform.position, pullingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, fishingEndTransform.position, pullingSpeed * Time.deltaTime);
                 rb2D.velocity = Vector2.zero;
 
                 if ((Vector2)transform.localPosition == Vector2.zero)
                 {
-                    if (caughtFish != null) caughtFish.Delete();
-                    if (isCatch) isCatch = false;
+                    FISHING_End();
                 }
             }
+        }
+
+        private void FISHING_End()
+        {
+            if (caughtFish != null)
+            {
+                UIManager.instance.SetInfo_FishingEndUI(caughtFish.name, caughtFish.level, caughtFish.price, caughtFish.fishImage);
+                caughtFish.Delete();
+            }
+            else
+            {
+                UIManager.instance.SetInfo_FishingEndUI("...", 0, 0, null);
+                Debug.Log("FishingFloat : ¤¾¤·");
+            }
+            GameManager.instance.changeStateEvent.Invoke(TurnState.READY_TURN);
         }
         #endregion
 

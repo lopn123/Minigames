@@ -11,7 +11,8 @@ public class ObjectPool : MonoBehaviour
 
     private Queue<GameObject> objectQueue = new Queue<GameObject>();
     [SerializeField]
-    private GameObject objectPrefab;
+    private GameObject[] objectPrefab;
+    private int randomNum;
 
     private void Awake()
     {
@@ -28,7 +29,8 @@ public class ObjectPool : MonoBehaviour
     {
         for (int i = 0; i < createObjectCount; i++)
         {
-            GameObject obj = Instantiate(objectPrefab, this.transform);
+            randomNum = Random.Range(0, objectPrefab.Length);
+            GameObject obj = Instantiate(objectPrefab[randomNum], this.transform);
             obj.SetActive(false);
             objectQueue.Enqueue(obj);
         }
@@ -43,7 +45,8 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            GameObject obj = Instantiate(objectPrefab, this.transform);
+            randomNum = Random.Range(0, objectPrefab.Length);
+            GameObject obj = Instantiate(objectPrefab[randomNum], this.transform);
             obj.SetActive(true);
         }
     }

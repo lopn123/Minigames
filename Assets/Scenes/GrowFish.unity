@@ -1098,5 +1098,9 @@ PrefabInstance:
       propertyPath: createObjectCount
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 3531837824268859059, guid: 2d42df0ed648a934f97d75b9b94534e4, type: 3}
+      propertyPath: objectPrefab.Array.data[0]
+      value: 
+      objectReference: {fileID: 9180616707699454374, guid: 0b9933e6a6d36de4cbcf93f1d2862d2e, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d42df0ed648a934f97d75b9b94534e4, type: 3}

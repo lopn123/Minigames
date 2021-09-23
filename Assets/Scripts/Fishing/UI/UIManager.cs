@@ -7,9 +7,15 @@ namespace Minigame.Fishing
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject fishingEndPanel;
-        private UIFishingEnd uiFishingEnd;
+        public static UIManager instance;
+
+        public UIReadyTurn uiReadyTurn;
+        public UICommon uiCommon;
+
+        private void Awake()
+        {
+            instance = this;
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -23,14 +29,14 @@ namespace Minigame.Fishing
 
         }
 
-        public void SetInfo_FishingEndUI(string fishName, int fishLevel, int fishPrice, Sprite fishImage, Color? nameColor = null, Color? moneyColor= null)
+        public void SetInfo_FishingEndUI(string fishName, int fishLevel, int fishPrice, Sprite fishImage)
         {
-            uiFishingEnd.SetText_FishName(fishName, (Color)nameColor);
-            uiFishingEnd.SetImageByFishLevel(fishLevel);
-            uiFishingEnd.SetText_Money(fishPrice, (Color)moneyColor);
-            uiFishingEnd.SetImage_Fish(fishImage);
+            uiReadyTurn.uiFishingEnd.SetText_FishName(fishName);
+            uiReadyTurn.uiFishingEnd.SetImageByFishLevel(fishLevel);
+            uiReadyTurn.uiFishingEnd.SetText_Money(fishPrice);
+            uiReadyTurn.uiFishingEnd.SetImage_Fish(fishImage);
 
-            fishingEndPanel.SetActive(true);
+            uiReadyTurn.SetActive_FishingEndPanel(true);
         }
     }
 }
