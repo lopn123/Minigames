@@ -34,7 +34,15 @@ namespace Minigame.Fishing
 
         public void SetImage_Fish(Sprite fishImage)
         {
-            image_fish.sprite = fishImage;
+            if(fishImage == null)
+            {
+                image_fish.enabled = false;
+            }
+            else
+            {
+                if(!image_fish.enabled) image_fish.enabled = true;
+                image_fish.sprite = fishImage;
+            }
         }
 
         public void SetImageByFishLevel(int level)

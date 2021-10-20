@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxMoveValue: {x: 10, y: 10}
+  fishImage: {fileID: 0}
   fishMoveTime: 3
   level: 1
   price: 500
@@ -196,4 +197,3 @@ MonoBehaviour:
   followSpeed: 2
   rotSpeed: 100
   isFollow: 0
-  fishImage: {fileID: 0}

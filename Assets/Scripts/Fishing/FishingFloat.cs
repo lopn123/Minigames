@@ -9,8 +9,8 @@ namespace Minigame.Fishing
     {
         private Transform fishingEndTransform;
         private Rigidbody2D rb2D;
-
         private Fish caughtFish;
+
         [HideInInspector]
         public TurnState state;
 
@@ -65,6 +65,7 @@ namespace Minigame.Fishing
             }
         }
 
+        #region TurnState
         private void TurnState_Init()
         {
             switch(state)
@@ -90,6 +91,7 @@ namespace Minigame.Fishing
                     break;
             }
         }
+        #endregion
 
         #region STATE_READY
         private void READY_Init()
@@ -177,7 +179,6 @@ namespace Minigame.Fishing
             else
             {
                 UIManager.instance.SetInfo_FishingEndUI("...", 0, 0, null);
-                Debug.Log("FishingFloat : ¤¾¤·");
             }
             GameManager.instance.changeStateEvent.Invoke(TurnState.READY_TURN);
         }
